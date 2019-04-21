@@ -1,20 +1,22 @@
 require 'pry'
 def consolidate_cart(cart)
-  cart.each_with_object({}) do |item, result|
-    item.each do |type, attributes|
-      if result[type]
-        attributes[:count] += 1
-      else
-        attributes[:count] = 1
-        result[type] = attributes
+  food_cart = {}
+  cart.each do |item_hash|
+    item_hash.each do |item|
+      if !food_cart[item]
+        food_cart[item] = {}
+        food_cart[item][:count] = 0
+        food_cart[item][:count] += 1
       end
     end
   end
+  food_cart
 end
 
 def apply_coupons(cart, coupons)
   coupons.each do |coupon|
     name = coupon[:item]
+    binding.pry
     if cart[name] && cart[name][:count] >= coupon[:num]
       if cart["#{name} W/COUPON"]
         cart["#{name} W/COUPON"][:count] += 1
